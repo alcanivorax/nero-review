@@ -1,0 +1,33 @@
+{
+  "name": "nero-review",
+  "version": "0.1.0",
+  "description": "Review a single file using AI. Simple, fast, honest.",
+  "type": "module",
+  "bin": {
+    "nero-review": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.25.0",
+  "dependencies": {
+    "commander": "^14.0.2",
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
