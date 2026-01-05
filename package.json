@@ -1,8 +1,9 @@
 {
   "name": "nero-review",
   "version": "0.1.0",
-  "description": "Review a single file using AI. Simple, fast, honest.",
+  "description": "Review code directly from your terminal",
   "type": "module",
+  "main": "dist/index.js",
   "bin": {
     "nero-review": "./dist/index.js"
   },
@@ -12,13 +13,20 @@
     "start": "node dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "package.json",
+    "README.npm.md"
   ],
+  "readme": "README.npm.md",
   "engines": {
     "node": ">=18"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "nero",
+    "code-review",
+    "terminal"
+  ],
+  "author": "alcanivorax",
   "license": "MIT",
   "packageManager": "pnpm@10.25.0",
   "dependencies": {

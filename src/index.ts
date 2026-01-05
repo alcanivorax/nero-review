@@ -3,4 +3,4 @@
 import "dotenv/config";
 import { runCommand } from "./cli/command.js";
 
-runCommand();
+runCommand(process.argv.slice(2));

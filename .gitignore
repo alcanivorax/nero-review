@@ -1,3 +1,25 @@
-node_modules
-dist
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# env files
 .env
+.env.*
+!.env.example
+
+# npm / package artifacts
+*.tgz
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor junk
+.DS_Store
+.idea/
+.vscode/
+*.swp
