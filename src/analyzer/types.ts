@@ -2,6 +2,7 @@ interface FileAnalyzerInput {
   path: string;
   extension: string;
   content: string;
+  truncated?: boolean;
 }
 
 interface FileAnalysis {
