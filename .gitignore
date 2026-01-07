@@ -7,6 +7,7 @@ dist/
 # env files
 .env
 .env.*
+# Include .env.example as a template for configuration
 !.env.example
 
 # npm / package artifacts

@@ -11,15 +11,11 @@ export async function fileAnalysis(
   const { role } = detectRole(fileInfo.path.split("/"));
   const style = detectStyle(fileInfo.content);
   const notes = collectNotes(fileInfo, { role, style });
-  console.log("- Language: ", language);
-  console.log("- Role: ", role);
-  console.log("- Style: ", style);
-  console.log("- Notes: ", notes);
 
   return {
     language: language,
     role: role,
     style: "unknown",
-    notes: [],
+    notes: notes,
   };
 }

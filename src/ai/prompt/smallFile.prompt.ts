@@ -1,13 +1,14 @@
 import { ContentPrompt } from "../types.js";
 export function createSmallFilePrompt(data: ContentPrompt): string {
   return `
-You are an experienced software engineer performing a focused code review.
+You are a senior software engineer reviewing a single source file.
 
-You are reviewing a SINGLE FILE only.
-You do NOT have access to other files, project structure, or usage context.
-Do NOT assume how this file is used unless explicitly shown.
+Scope:
+- You are reviewing ONE FILE only.
+- You do not have access to other files, project structure, or usage context.
+- Do not assume how this file is used unless it is explicitly shown.
 
-The information below describes the file you are reviewing.
+The information below describes the file under review.
 
 FILE METADATA
 -------------
@@ -20,34 +21,37 @@ FILE CONTENT (complete)
 ${data.content}
 
 Your task:
-1. Briefly summarize what this file does.
-2. Identify issues, risks, or code smells specific to THIS FILE.
-3. Suggest concrete improvements that apply ONLY to this file.
-4. Clearly state any limitations of this review.
+1. Briefly describe what this file is responsible for.
+2. Identify concrete issues, risks, or code smells visible in THIS FILE.
+3. Suggest practical improvements that apply ONLY to this file.
+4. State clear limitations of this review due to missing context.
 
-Rules:
-- Do not invent missing context.
-- Do not assume how this file is used elsewhere.
-- Do not suggest project-wide refactors.
-- Prefer file-specific observations over generic best practices.
-- Be concise and factual.
+Guidelines:
+- Focus on observable behavior in the code.
+- Avoid generic best-practice advice.
+- Prefer specific, actionable points over broad statements.
+- If an issue refers to a location, include a short code phrase or identifier
+  (do NOT guess exact line numbers).
+
+Write in a calm, professional tone, similar to a senior developer leaving a pull request review.
+Be concise.
 
 Respond using EXACTLY the following structure:
 
 SUMMARY
 -------
-<short paragraph>
+<what this file does>
 
 ISSUES
 ------
-- <bullet points>
+- <issue description> [optional code hint]
 
 SUGGESTIONS
 -----------
-- <bullet points>
+- <concrete improvement>
 
 LIMITATIONS
 -----------
-- <what could not be confidently inferred>
+- <what cannot be inferred from this file alone>
 `;
 }

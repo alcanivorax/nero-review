@@ -1,8 +1,6 @@
 export function detectLanguage(
   input: string
 ): "TypeScript" | "JavaScript" | "Unknown" {
-  console.log("- Extension:", input);
-
   const languageMap: Record<string, "TypeScript" | "JavaScript"> = {
     // TypeScript extensions
     ".ts": "TypeScript",

@@ -10,13 +10,13 @@ export async function readTextFile(path: string) {
 
   const raw = await readFile(path, "utf-8");
   const lines: string[] = raw.split("\n");
-  // const filterLines = removeEmptyLines(lines, "");
+  const filterLines = removeEmptyLines(lines, "");
 
   let content = raw;
   let truncated = false;
 
   if (size > MAX_SIZE || lines.length > MAX_LINES) {
-    content = lines.slice(0, MAX_LINES).join("\n");
+    content = filterLines.slice(0, MAX_LINES).join("\n");
     truncated = true;
   }
 
@@ -26,16 +26,20 @@ export async function readTextFile(path: string) {
     size,
     lines: lines.length,
     truncated,
-    content,
+    content: normalizeContent(content),
   };
 }
 
-// function removeEmptyLines<T>(arr: Array<T>, value: T): Array<T> {
-//   for (let i = 0; i < arr.length; i++) {
-//     const index = arr.indexOf(value);
-//     if (index > -1) {
-//       arr.splice(index, 1);
-//     }
-//   }
-//   return arr;
-// }
+function removeEmptyLines<T>(arr: Array<T>, value: T): Array<T> {
+  for (let i = 0; i < arr.length; i++) {
+    const index = arr.indexOf(value);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+  }
+  return arr;
+}
+
+function normalizeContent(content: string): string {
+  return content.replace(/\r\n/g, "\n").replace(/\t/g, " ").trim();
+}
