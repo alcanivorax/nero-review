@@ -30,12 +30,12 @@ export async function readTextFile(path: string) {
   };
 }
 
-function removeEmptyLines<T>(arr: Array<T>, value: T): Array<T> {
-  for (let i = 0; i < arr.length; i++) {
-    const index = arr.indexOf(value);
-    if (index > -1) {
-      arr.splice(index, 1);
-    }
-  }
-  return arr;
-}
+// function removeEmptyLines<T>(arr: Array<T>, value: T): Array<T> {
+//   for (let i = 0; i < arr.length; i++) {
+//     const index = arr.indexOf(value);
+//     if (index > -1) {
+//       arr.splice(index, 1);
+//     }
+//   }
+//   return arr;
+// }
