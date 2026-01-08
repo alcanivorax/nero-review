@@ -1,45 +1,41 @@
 import { readFile, stat } from "fs/promises";
 import { extname } from "path";
+import { FileMetadata } from "../types.js";
+import { removeBlankLines } from "./removeBlankLines.js";
+import { sanitizeContent } from "./sanitizeContent.js";
 
-const MAX_SIZE = 50 * 1024; // 50kb
-const MAX_LINES = 500;
+const MAX_SIZE = 20 * 1024;
+const MAX_LINES = 300;
 
-export async function readTextFile(path: string) {
-  const info = await stat(path);
-  const size = info.size;
+export async function readFileContent(filePath: string): Promise<FileMetadata> {
+  const fileInfo = await stat(filePath);
+  const size = fileInfo.size;
 
-  const raw = await readFile(path, "utf-8");
-  const lines: string[] = raw.split("\n");
-  const filterLines = removeEmptyLines(lines, "");
+  if (size > MAX_SIZE) {
+    // temporary error for large files, will be truncate instead later
+    throw new Error(`File too large: ${size} bytes`);
+  }
 
-  let content = raw;
+  const rawFileInfo = await readFile(filePath, "utf-8");
+  const lines: string[] = rawFileInfo.split("\n");
+  const effectiveLines: string[] = removeBlankLines(lines);
+
+  let rawContent: string;
   let truncated = false;
 
-  if (size > MAX_SIZE || lines.length > MAX_LINES) {
-    content = filterLines.slice(0, MAX_LINES).join("\n");
+  if (effectiveLines.length > MAX_LINES) {
+    rawContent = effectiveLines.slice(0, MAX_LINES).join("\n");
     truncated = true;
+  } else {
+    rawContent = effectiveLines.join("\n");
   }
 
   return {
-    path,
-    extension: extname(path),
+    filePath,
+    extension: extname(filePath),
     size,
-    lines: lines.length,
+    lines: effectiveLines.length,
     truncated,
-    content: normalizeContent(content),
+    content: sanitizeContent(rawContent),
   };
-}
-
-function removeEmptyLines<T>(arr: Array<T>, value: T): Array<T> {
-  for (let i = 0; i < arr.length; i++) {
-    const index = arr.indexOf(value);
-    if (index > -1) {
-      arr.splice(index, 1);
-    }
-  }
-  return arr;
-}
-
-function normalizeContent(content: string): string {
-  return content.replace(/\r\n/g, "\n").replace(/\t/g, " ").trim();
 }

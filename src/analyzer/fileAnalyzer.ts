@@ -1,16 +1,17 @@
-import { FileAnalyzerInput, FileAnalysis } from "./types.js";
+import { FileMetadata } from "../types.js";
+import { FileAnalysis } from "./types.js";
 import { detectLanguage } from "./detectLanguage.js";
 import { detectRole } from "./detectRole.js";
 import { detectStyle } from "./detectStyle.js";
 import { collectNotes } from "./detectNote.js";
 
 export async function fileAnalysis(
-  fileInfo: FileAnalyzerInput
+  fileMetadata: FileMetadata
 ): Promise<FileAnalysis> {
-  const language = detectLanguage(fileInfo.extension);
-  const { role } = detectRole(fileInfo.path.split("/"));
-  const style = detectStyle(fileInfo.content);
-  const notes = collectNotes(fileInfo, { role, style });
+  const language = detectLanguage(fileMetadata.extension);
+  const { role } = detectRole(fileMetadata.filePath.split("/"));
+  const style = detectStyle(fileMetadata.content);
+  const notes = collectNotes(fileMetadata, { role, style });
 
   return {
     language: language,

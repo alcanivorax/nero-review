@@ -1,10 +1,10 @@
-interface FileInfo {
-  path: string;
+interface FileMetadata {
+  filePath: string;
   extension: string;
-  size: string;
-  lines: string;
+  size: number;
+  lines: number;
   truncated: boolean;
   content: string;
 }
 
-export type { FileInfo };
+export type { FileMetadata };

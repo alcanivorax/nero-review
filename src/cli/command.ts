@@ -1,5 +1,5 @@
 import { assertFile } from "../reader/stat.js";
-import { readTextFile } from "../reader/readFile.js";
+import { readFileContent } from "../reader/readFile.js";
 import { fileAnalysis } from "../analyzer/fileAnalyzer.js";
 import { createSmallFilePrompt } from "../ai/prompt/smallFile.prompt.js";
 import { runPrompt } from "../ai/runPrompt.js";
@@ -12,15 +12,15 @@ export async function runCommand(args: string[]) {
   }
 
   const filePath = args[0];
-  // -- ensure ---
+
   try {
     await assertFile(filePath);
-    const file = await readTextFile(filePath);
-
-    const info = await fileAnalysis(file);
+    const fileMetadata = await readFileContent(filePath);
+    // -- ensure ---
+    const info = await fileAnalysis(fileMetadata);
 
     const contentInfo = {
-      content: file.content,
+      content: fileMetadata.content,
       info: {
         language: info.language,
         role: info.role,
@@ -29,7 +29,7 @@ export async function runCommand(args: string[]) {
       },
     };
 
-    const smallFilePrompt = await createSmallFilePrompt(contentInfo);
+    const smallFilePrompt = createSmallFilePrompt(contentInfo);
 
     const response = await runPrompt(smallFilePrompt);
 

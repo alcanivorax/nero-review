@@ -1,8 +1,9 @@
 interface FileAnalyzerInput {
-  path: string;
+  filePath: string;
   extension: string;
-  content: string;
+  lines: number;
   truncated?: boolean;
+  content: string;
 }
 
 interface FileAnalysis {
