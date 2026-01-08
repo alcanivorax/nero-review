@@ -1,11 +1,10 @@
 import { assertFile } from "../reader/stat.js";
 import { readFileContent } from "../reader/readFile.js";
-import { fileAnalysis } from "../analyzer/fileAnalyzer.js";
+import { buildAnalysisContext } from "../analyzer/buildAnalysisContext.js";
 import { createSmallFilePrompt } from "../ai/prompt/smallFile.prompt.js";
-import { runPrompt } from "../ai/runPrompt.js";
+import { runJsonPrompt } from "../ai/runJsonPrompt.js";
 
 export async function runCommand(args: string[]) {
-  // -- sure ---
   if (args.length === 0) {
     console.error("✖ No file path provided");
     return process.exit(1);
@@ -16,24 +15,14 @@ export async function runCommand(args: string[]) {
   try {
     await assertFile(filePath);
     const fileMetadata = await readFileContent(filePath);
-    // -- ensure ---
-    const info = await fileAnalysis(fileMetadata);
 
-    const contentInfo = {
-      content: fileMetadata.content,
-      info: {
-        language: info.language,
-        role: info.role,
-        style: info.style,
-        notes: info.notes,
-      },
-    };
+    const analysisContext = await buildAnalysisContext(fileMetadata);
 
-    const smallFilePrompt = createSmallFilePrompt(contentInfo);
+    const smallFilePrompt = createSmallFilePrompt(analysisContext);
 
-    const response = await runPrompt(smallFilePrompt);
+    const aiResponse = await runJsonPrompt(smallFilePrompt);
 
-    console.log(response);
+    console.log(aiResponse);
   } catch (err: any) {
     console.error("✖", err.message);
     return process.exit(1);

@@ -1,6 +1,6 @@
 import { OpenRouter } from "@openrouter/sdk";
 
-export async function runPrompt(prompt: string): Promise<string> {
+export async function runJsonPrompt<T>(prompt: string): Promise<T> {
   const apiKey = process.env.NERO_API_KEY;
   const model = process.env.NERO_MODEL;
   if (!apiKey) {
@@ -29,8 +29,12 @@ export async function runPrompt(prompt: string): Promise<string> {
   if (!text || !text.trim()) {
     throw new Error("AI Response contained no readable text");
   }
-
-  return text.trim();
+  const cleaned = unWrapJsonFence(text);
+  try {
+    return JSON.parse(cleaned) as T;
+  } catch {
+    throw new Error("Failed to parse AI response as JSON");
+  }
 }
 
 function extractTextContent(content: string | any[]): string | null {
@@ -47,3 +51,22 @@ function extractTextContent(content: string | any[]): string | null {
 
   return null;
 }
+
+function unWrapJsonFence(text: string): string {
+  const trimmed = text.trim();
+  // Strip ONLY the outer ``` fence if present
+  if (trimmed.startsWith("```")) {
+    const lines = trimmed.split("\n");
+    // Remove opening fense(``` or ```json)
+    lines.shift();
+
+    // Remove closing fense(```)
+    if (lines[lines.length - 1].trim() === "```") {
+      lines.pop();
+    }
+
+    return lines.join("\n").trim();
+  }
+  return trimmed;
+}
+// Use zod

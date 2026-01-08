@@ -1,6 +1,6 @@
-import { FileAnalysis } from "./types.js";
+import { AnalysisContext } from "./types.js";
 
-export function detectStyle(content: string): FileAnalysis["style"] {
+export function detectStyle(content: string): AnalysisContext["style"] {
   const functionHints = ["function", "=>"];
   const oopsHints = [
     "class",

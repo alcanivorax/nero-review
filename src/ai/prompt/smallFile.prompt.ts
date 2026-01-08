@@ -1,57 +1,78 @@
-import { ContentPrompt } from "../types.js";
-export function createSmallFilePrompt(data: ContentPrompt): string {
+import { AnalysisContext } from "../../types.js";
+
+export function createSmallFilePrompt(context: AnalysisContext): string {
   return `
-You are a senior software engineer reviewing a single source file.
+You are a senior software engineer performing a focused review of a single source file.
 
-Scope:
+Scope rules (strict):
 - You are reviewing ONE FILE only.
-- You do not have access to other files, project structure, or usage context.
-- Do not assume how this file is used unless it is explicitly shown.
+- You do NOT have access to other files, project structure, or runtime usage.
+- Do NOT assume how this file is used unless it is explicitly shown in the code.
+- Base all conclusions ONLY on the provided content.
 
-The information below describes the file under review.
+The following information describes the file under review.
 
-FILE METADATA
--------------
-Language: ${data.info.language}
-Role: ${data.info.role}
-Style: ${data.info.style}
+FILE CONTEXT
+------------
+Language: ${context.language}
+Role (hint): ${context.role}
+Style (hint): ${context.style}
 
-FILE CONTENT (complete)
------------------------
-${data.content}
+NOTES (tool-generated observations):
+${
+  context.notes.length > 0
+    ? context.notes.map((n) => `- ${n}`).join("\n")
+    : "- None"
+}
+
+FILE CONTENT
+------------
+${context.content}
 
 Your task:
-1. Briefly describe what this file is responsible for.
-2. Identify concrete issues, risks, or code smells visible in THIS FILE.
-3. Suggest practical improvements that apply ONLY to this file.
-4. State clear limitations of this review due to missing context.
+Analyze the file and return a JSON object that STRICTLY follows the schema below.
 
-Guidelines:
-- Focus on observable behavior in the code.
-- Avoid generic best-practice advice.
-- Prefer specific, actionable points over broad statements.
-- If an issue refers to a location, include a short code phrase or identifier
-  (do NOT guess exact line numbers).
+Output schema (must match exactly):
 
-Write in a calm, professional tone, similar to a senior developer leaving a pull request review.
-Be concise.
+{
+  "summary": string,
 
-Respond using EXACTLY the following structure:
+  "issues": [
+    {
+      "severity": "high" | "medium" | "low",
+      "title": string,
+      "description": string
+    }
+  ],
 
-SUMMARY
--------
-<what this file does>
+  "suggestions": [
+    {
+      "text": string,
+      "fixes": [
+        {
+          "severity": "high" | "medium" | "low",
+          "title": string
+        }
+      ],
+      "notes": string[]
+    }
+  ],
 
-ISSUES
-------
-- <issue description> [optional code hint]
+  "strengths": string[]
+}
 
-SUGGESTIONS
------------
-- <concrete improvement>
+Rules (non-negotiable):
+- Output ONLY valid JSON. Do NOT include markdown, comments, or explanations.
+- Do NOT include line numbers.
+- Do NOT calculate or mention any score.
+- Use ONLY "high", "medium", or "low" for severity.
+- Issues must be concrete and observable in THIS FILE.
+- Suggestions must directly relate to listed issues when possible.
+- Strengths must be factual and visible in the code (max 3).
+- If no issues are found, return an empty "issues" array.
+- If no suggestions are applicable, return an empty "suggestions" array.
+- Be concise and precise. Avoid generic best practices.
 
-LIMITATIONS
------------
-- <what cannot be inferred from this file alone>
+Return the JSON object now.
 `;
 }

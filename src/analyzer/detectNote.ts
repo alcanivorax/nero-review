@@ -1,10 +1,11 @@
-import { FileAnalysis, FileAnalyzerInput } from "./types.js";
+import { FileMetadata } from "../types.js";
+import { AnalysisContext } from "./types.js";
 
 export function collectNotes(
-  input: FileAnalyzerInput,
+  input: FileMetadata,
   analysis: {
-    role: FileAnalysis["role"];
-    style: FileAnalysis["style"];
+    role: AnalysisContext["role"];
+    style: AnalysisContext["style"];
   }
 ): string[] {
   const notes: string[] = [];

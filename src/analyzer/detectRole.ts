@@ -1,5 +1,6 @@
-import { RoleSignature } from "./types.js";
-export function detectRole(input: string[]): RoleSignature {
+import { AnalysisContext } from "../types.js";
+
+export function detectRole(input: string[]): AnalysisContext["role"] {
   const roleDetection = [
     // Utility directories
     { dir: ["lib"], detectedRole: "utility" as const },
@@ -42,9 +43,9 @@ export function detectRole(input: string[]): RoleSignature {
 
   for (const { dir, detectedRole } of roleDetection) {
     if (dir.some((e) => input.includes(e))) {
-      return { role: detectedRole };
+      return detectedRole;
     }
   }
 
-  return { role: "unknown" };
+  return "unknown";
 }
