@@ -3,6 +3,8 @@ import { readFileContent } from "../reader/readFile.js";
 import { buildAnalysisContext } from "../analyzer/buildAnalysisContext.js";
 import { createSmallFilePrompt } from "../ai/prompt/smallFile.prompt.js";
 import { runJsonPrompt } from "../ai/runJsonPrompt.js";
+import { validateCodeReviewOutput } from "../ai/validateCodeReviewOutput.js";
+import { createCodeReviewResult } from "../helper/createCodeReviewResult.js";
 
 export async function runCommand(args: string[]) {
   if (args.length === 0) {
@@ -10,7 +12,7 @@ export async function runCommand(args: string[]) {
     return process.exit(1);
   }
 
-  const filePath = args[0];
+  const [filePath] = args;
 
   try {
     await assertFile(filePath);
@@ -21,10 +23,18 @@ export async function runCommand(args: string[]) {
     const smallFilePrompt = createSmallFilePrompt(analysisContext);
 
     const aiResponse = await runJsonPrompt(smallFilePrompt);
+    const aiReview = validateCodeReviewOutput(aiResponse);
 
-    console.log(aiResponse);
-  } catch (err: any) {
-    console.error("✖", err.message);
-    return process.exit(1);
+    const reviewReport = createCodeReviewResult(
+      aiReview,
+      fileMetadata,
+      analysisContext
+    );
+
+    console.log(reviewReport);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("✖", message);
+    process.exit(1);
   }
 }
