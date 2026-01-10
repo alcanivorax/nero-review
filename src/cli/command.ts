@@ -6,6 +6,7 @@ import { runJsonPrompt } from "../ai/runJsonPrompt.js";
 import { validateCodeReviewOutput } from "../ai/validateCodeReviewOutput.js";
 import { createCodeReviewResult } from "../helper/createCodeReviewResult.js";
 import { formatReview } from "../printer/formatReview.js";
+import { PrettyPrinter } from "../printer/PrettyPrinter.js";
 
 export async function runCommand(args: string[]) {
   if (args.length === 0) {
@@ -34,7 +35,8 @@ export async function runCommand(args: string[]) {
 
     const formattedReview = formatReview(reviewReport);
 
-    console.log(formattedReview);
+    const logger = new PrettyPrinter();
+    logger.print(formattedReview);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("✖", message);

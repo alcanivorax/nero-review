@@ -67,7 +67,7 @@ interface FormattedReview {
 
   suggestions: Array<{
     index: number;
-    text: string;
+    recommendation: string;
     fixes: Array<{
       severity: "high" | "medium" | "low";
       title: string;
@@ -80,10 +80,15 @@ interface FormattedReview {
   footer: string;
 }
 
+interface Printer {
+  print(review: FormattedReview): void;
+}
+
 export type {
   FileMetadata,
   AnalysisContext,
   CodeReviewResult,
   CodeReviewContent,
   FormattedReview,
+  Printer,
 };
