@@ -1,8 +1,8 @@
 import { readFile, stat } from "fs/promises";
 import { extname } from "path";
 import { FileMetadata } from "../types.js";
-import { removeBlankLines } from "../helper/removeBlankLines.js";
-import { sanitizeContent } from "../helper/sanitizeContent.js";
+import { removeBlankLines } from "../helper/text/removeBlankLines.js";
+import { sanitizeContent } from "../helper/text/sanitizeContent.js";
 
 const MAX_SIZE = 20 * 1024;
 const MAX_LINES = 300;
@@ -34,8 +34,10 @@ export async function readFileContent(filePath: string): Promise<FileMetadata> {
     filePath,
     extension: extname(filePath),
     size,
-    lines: effectiveLines.length,
+    lines: lines.length,
+    effectiveLines: effectiveLines.length,
     truncated,
     content: sanitizeContent(rawContent),
+    rawContent,
   };
 }

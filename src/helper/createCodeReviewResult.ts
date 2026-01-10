@@ -23,7 +23,7 @@ export function createCodeReviewResult(
       language: analysisContext.language,
       lines: fileMetadata.lines,
       truncated: fileMetadata.truncated,
-      content: fileMetadata.content,
+      rawContent: fileMetadata.rawContent,
     },
   };
 }

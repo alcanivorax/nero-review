@@ -1,7 +1,7 @@
 import { assertFile } from "../reader/stat.js";
 import { readFileContent } from "../reader/readFile.js";
 import { buildAnalysisContext } from "../analyzer/buildAnalysisContext.js";
-import { createSmallFilePrompt } from "../ai/prompt/smallFile.prompt.js";
+import { createSmallFilePrompt } from "../ai/prompt/smallFilePrompt.js";
 import { runJsonPrompt } from "../ai/runJsonPrompt.js";
 import { validateCodeReviewOutput } from "../ai/validateCodeReviewOutput.js";
 import { createCodeReviewResult } from "../helper/createCodeReviewResult.js";

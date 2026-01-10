@@ -3,8 +3,10 @@ interface FileMetadata {
   extension: string;
   size: number;
   lines: number;
+  effectiveLines: number;
   truncated: boolean;
   content: string;
+  rawContent: string;
 }
 
 interface AnalysisContext {
@@ -40,7 +42,7 @@ interface CodeReviewResult {
     language: string;
     lines: number;
     truncated: boolean;
-    content: string;
+    rawContent: string;
   };
 }
 

@@ -1,8 +1,8 @@
 import { CodeReviewResult, FormattedReview } from "../types.js";
-import { buildNextStep } from "../helper/buildNextStep.js";
-import { scoreLabel } from "../helper/scoreLable.js";
-import { calulateScore } from "../helper/calulateScore.js";
-import { resolveLineNumber } from "../helper/resolveLineNumber.js";
+import { buildNextStep } from "../helper/review/buildNextStep.js";
+import { scoreLabel } from "../helper/scoring/scoreLable.js";
+import { calulateScore } from "../helper/scoring/calulateScore.js";
+import { resolveLineNumber } from "../helper/review/resolveLineNumber.js";
 
 export function formatReview(result: CodeReviewResult): FormattedReview {
   const score = calulateScore(result);
@@ -22,7 +22,7 @@ export function formatReview(result: CodeReviewResult): FormattedReview {
         severity: i.severity,
         title: i.title,
         description: i.description,
-        line: resolveLineNumber(i, result.metadata.content),
+        line: resolveLineNumber(i, result.metadata.rawContent),
       })),
     },
 

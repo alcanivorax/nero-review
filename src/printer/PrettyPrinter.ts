@@ -1,5 +1,5 @@
-import { wrap } from "../helper/wrap.js";
-import { severityIcon } from "../helper/severityIcon.js";
+import { wrap } from "../helper/text/wrap.js";
+import { severityIcon } from "../helper/ui/severityIcon.js";
 import { FormattedReview, Printer } from "../types.js";
 
 export class PrettyPrinter implements Printer {
