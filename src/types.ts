@@ -22,7 +22,6 @@ interface CodeReviewResult {
     severity: "high" | "medium" | "low";
     title: string;
     description: string;
-    line?: number;
   }>;
 
   suggestions: Array<{
@@ -37,18 +36,54 @@ interface CodeReviewResult {
   strengths: string[];
 
   metadata: {
-    file: string;
+    filePath: string;
     language: string;
     lines: number;
     truncated: boolean;
+    content: string;
   };
 }
 
 type CodeReviewContent = Omit<CodeReviewResult, "metadata">;
+
+interface FormattedReview {
+  header: {
+    filePath: string;
+    metaLeft: string;
+    scoreRight: string;
+  };
+
+  summary: string;
+
+  issues: {
+    total: number;
+    items: Array<{
+      severity: "high" | "medium" | "low";
+      title: string;
+      description: string;
+      line: number | null;
+    }>;
+  };
+
+  suggestions: Array<{
+    index: number;
+    text: string;
+    fixes: Array<{
+      severity: "high" | "medium" | "low";
+      title: string;
+    }>;
+    notes: string[];
+  }>;
+
+  strengths: string[];
+
+  footer: string;
+}
 
 export type {
   FileMetadata,
   AnalysisContext,
   CodeReviewResult,
   CodeReviewContent,
+  FormattedReview,
 };

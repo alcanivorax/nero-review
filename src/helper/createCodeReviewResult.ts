@@ -12,17 +12,18 @@ export function createCodeReviewResult(
 ): CodeReviewResult {
   return {
     summary: aiReview.summary,
+
     issues: aiReview.issues.map((issue) => ({
       ...issue,
-      //   line: resolveLineNumber(issue, fileMetadata.content),
     })),
     suggestions: aiReview.suggestions,
     strengths: aiReview.strengths,
     metadata: {
-      file: fileMetadata.filePath,
+      filePath: fileMetadata.filePath,
       language: analysisContext.language,
       lines: fileMetadata.lines,
       truncated: fileMetadata.truncated,
+      content: fileMetadata.content,
     },
   };
 }

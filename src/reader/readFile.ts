@@ -1,8 +1,8 @@
 import { readFile, stat } from "fs/promises";
 import { extname } from "path";
 import { FileMetadata } from "../types.js";
-import { removeBlankLines } from "./removeBlankLines.js";
-import { sanitizeContent } from "./sanitizeContent.js";
+import { removeBlankLines } from "../helper/removeBlankLines.js";
+import { sanitizeContent } from "../helper/sanitizeContent.js";
 
 const MAX_SIZE = 20 * 1024;
 const MAX_LINES = 300;

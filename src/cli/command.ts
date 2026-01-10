@@ -5,6 +5,7 @@ import { createSmallFilePrompt } from "../ai/prompt/smallFile.prompt.js";
 import { runJsonPrompt } from "../ai/runJsonPrompt.js";
 import { validateCodeReviewOutput } from "../ai/validateCodeReviewOutput.js";
 import { createCodeReviewResult } from "../helper/createCodeReviewResult.js";
+import { formatReview } from "../printer/formatReview.js";
 
 export async function runCommand(args: string[]) {
   if (args.length === 0) {
@@ -31,7 +32,9 @@ export async function runCommand(args: string[]) {
       analysisContext
     );
 
-    console.log(reviewReport);
+    const formattedReview = formatReview(reviewReport);
+
+    console.log(formattedReview);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("✖", message);
