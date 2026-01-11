@@ -1,4 +1,4 @@
-<p align="center">
+<!-- <p align="center">
   <h1 align="center">nero-review</h1>
   <p align="center">
     AI-powered code review — directly from your terminal.
@@ -19,8 +19,8 @@
 **nero-review** is a **terminal-first AI code reviewer** that analyzes your files, understands their role and structure,
 and produces **validated, structured feedback** you can actually act on.
 
-No dashboards.  
-No browser tabs.  
+No dashboards.
+No browser tabs.
 No AI word soup.
 
 ---
@@ -43,4 +43,4 @@ It validates inputs, constrains outputs, and keeps the developer in control.
 
 ```bash
 npm install -g nero-review
-```
+``` -->
