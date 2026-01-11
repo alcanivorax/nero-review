@@ -38,6 +38,6 @@ export async function readFileContent(filePath: string): Promise<FileMetadata> {
     effectiveLines: effectiveLines.length,
     truncated,
     content: sanitizeContent(rawContent),
-    rawContent,
+    rawContent: rawFileInfo,
   };
 }

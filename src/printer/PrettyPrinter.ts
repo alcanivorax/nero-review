@@ -17,6 +17,8 @@ export class PrettyPrinter implements Printer {
   }
 
   private printHeader(review: FormattedReview["header"]) {
+    console.log();
+    console.log();
     console.log(theme.title(review.filePath));
 
     const left = theme.muted(review.metaLeft);

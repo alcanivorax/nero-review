@@ -22,6 +22,8 @@ export const theme = {
   bullet: chalk.hex("#73DACA")("•"), // Soft teal
   // arrow: chalk.hex("#565F89")("→"), // Slate gray
   arrow: chalk.hex("#73DACA")("→"), // Slate gray
+  loader: chalk.hex("#C0CAF5"),
+  message: chalk.hex("#7AA2F7"),
   divider: (width: number) => chalk.hex("#414868")("─".repeat(width)), // Dark slate
 
   // Metadata
