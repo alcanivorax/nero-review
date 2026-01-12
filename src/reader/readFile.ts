@@ -4,15 +4,13 @@ import { FileMetadata } from "../types.js";
 import { removeBlankLines } from "../helper/text/removeBlankLines.js";
 import { sanitizeContent } from "../helper/text/sanitizeContent.js";
 
-const MAX_SIZE = 20 * 1024;
-const MAX_LINES = 300;
+const MAX_SIZE = 50 * 1024;
 
 export async function readFileContent(filePath: string): Promise<FileMetadata> {
   const fileInfo = await stat(filePath);
   const size = fileInfo.size;
 
   if (size > MAX_SIZE) {
-    // temporary error for large files, will be truncate instead later
     throw new Error(`File too large: ${size} bytes`);
   }
 
@@ -20,14 +18,24 @@ export async function readFileContent(filePath: string): Promise<FileMetadata> {
   const lines: string[] = rawFileInfo.split("\n");
   const effectiveLines: string[] = removeBlankLines(lines);
 
-  let rawContent: string;
-  let truncated = false;
+  let processedContent: string;
 
-  if (effectiveLines.length > MAX_LINES) {
-    rawContent = effectiveLines.slice(0, MAX_LINES).join("\n");
+  let truncated = false;
+  const TOP_LINES = 150;
+  const BOTTOM_LINES = 150;
+
+  const total = effectiveLines.length;
+
+  if (total > TOP_LINES + BOTTOM_LINES) {
+    const top = effectiveLines.slice(0, TOP_LINES);
+    const bottom = effectiveLines.slice(total - BOTTOM_LINES);
+
+    processedContent = [...top, "\n/* ... truncated ... */\n", ...bottom].join(
+      "\n"
+    );
     truncated = true;
   } else {
-    rawContent = effectiveLines.join("\n");
+    processedContent = effectiveLines.join("\n");
   }
 
   return {
@@ -37,7 +45,7 @@ export async function readFileContent(filePath: string): Promise<FileMetadata> {
     lines: lines.length,
     effectiveLines: effectiveLines.length,
     truncated,
-    content: sanitizeContent(rawContent),
+    content: sanitizeContent(processedContent),
     rawContent: rawFileInfo,
   };
 }

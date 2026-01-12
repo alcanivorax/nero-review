@@ -1,14 +1,14 @@
 import { wrap } from "../helper/text/wrap.js";
 import { severityIcon } from "../helper/ui/severityIcon.js";
 import { theme } from "../helper/ui/theme.js";
-import { FormattedReview, Printer } from "../types.js";
+import { FileMetadata, FormattedReview, Printer } from "../types.js";
 
 export class PrettyPrinter implements Printer {
   private readonly width = 80;
   private readonly scoreColumnWidth = 24;
 
-  print(review: FormattedReview): void {
-    this.printHeader(review.header);
+  print(review: FormattedReview, fileMetadata: FileMetadata): void {
+    this.printHeader(review.header, fileMetadata.truncated);
     this.printSummary(review.summary);
     this.printIssues(review.issues);
     this.printSuggestions(review.suggestions, review.issues);
@@ -16,8 +16,16 @@ export class PrettyPrinter implements Printer {
     this.printFooter(review.footer);
   }
 
-  private printHeader(review: FormattedReview["header"]) {
+  private printHeader(
+    review: FormattedReview["header"],
+    truncated: FileMetadata["truncated"]
+  ) {
     console.log();
+    if (truncated) {
+      console.log(
+        theme.title(" File is large; review is based on partial content.")
+      );
+    }
     console.log();
     console.log(theme.title(review.filePath));
 

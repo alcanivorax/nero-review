@@ -83,7 +83,7 @@ interface FormattedReview {
 }
 
 interface Printer {
-  print(review: FormattedReview): void;
+  print(review: FormattedReview, fileMetadata: FileMetadata): void;
 }
 
 export type {

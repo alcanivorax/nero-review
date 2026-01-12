@@ -51,7 +51,7 @@ export async function runCommand(args: string[]) {
     const formattedReview = formatReview(reviewReport);
 
     const logger = new PrettyPrinter();
-    logger.print(formattedReview);
+    logger.print(formattedReview, fileMetadata);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(theme.error(" ✖ "), theme.muted(message));
