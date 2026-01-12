@@ -1,6 +1,6 @@
 {
   "name": "nero-review",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Review code directly from your terminal",
   "type": "module",
   "main": "./dist/index.js",
