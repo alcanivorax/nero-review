@@ -1,5 +1,3 @@
-import { CodeReviewContent } from "../../types.js";
-
 export function resolveLineNumber(
   issue: { title: string; description: string },
   content: string

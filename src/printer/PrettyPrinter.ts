@@ -98,15 +98,15 @@ export class PrettyPrinter implements Printer {
       );
 
       for (const fix of s.fixes) {
-        const issue = this.findIssueForFix(fix, issues.items);
-        const issueTitle = issue?.title || "Unknown issue";
+        // const issue = this.findIssueForFix(fix, issues.items);
+        // const issueTitle = issue?.title || "Unknown issue";
         // const issueLine = issue?.line ?? "?";
 
         console.log(
           theme.muted(
-            `     ${theme.arrow} Fixes: ${severityIcon(
-              fix.severity
-            )}  ${issueTitle}`
+            `     ${theme.arrow} Fixes: ${severityIcon(fix.severity)}  ${
+              fix.title
+            }`
           )
         );
       }
@@ -119,13 +119,13 @@ export class PrettyPrinter implements Printer {
     console.log();
   }
 
-  private findIssueForFix(fix: any, issues: any[]): any | null {
-    return (
-      issues.find((issue) => issue.severity === fix.severity) ||
-      issues[issues.length - 1] ||
-      null
-    );
-  }
+  // private findIssueForFix(fix: any, issues: any[]): any | null {
+  //   return (
+  //     issues.find((issue) => issue.severity === fix.severity) ||
+  //     issues[issues.length - 1] ||
+  //     null
+  //   );
+  // }
 
   private printStrengths(strengths: string[]) {
     console.log();

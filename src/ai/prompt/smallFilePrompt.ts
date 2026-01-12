@@ -2,15 +2,13 @@ import { AnalysisContext } from "../../types.js";
 
 export function createSmallFilePrompt(context: AnalysisContext): string {
   return `
-You are a senior software engineer performing a focused review of a single source file.
+You are a senior software engineer reviewing a SINGLE source file.
 
-Scope rules (strict):
-- You are reviewing ONE FILE only.
-- You do NOT have access to other files, project structure, or runtime usage.
-- Do NOT assume how this file is used unless it is explicitly shown in the code.
+Scope (mandatory):
+- Review ONLY this file.
+- No access to other files, project structure, or runtime behavior.
+- Do NOT infer usage unless explicitly shown.
 - Base all conclusions ONLY on the provided content.
-
-The following information describes the file under review.
 
 FILE CONTEXT
 ------------
@@ -18,7 +16,7 @@ Language: ${context.language}
 Role (hint): ${context.role}
 Style (hint): ${context.style}
 
-NOTES (tool-generated observations):
+NOTES (tool-generated):
 ${
   context.notes.length > 0
     ? context.notes.map((n) => `- ${n}`).join("\n")
@@ -29,14 +27,12 @@ FILE CONTENT
 ------------
 ${context.content}
 
-Your task:
-Analyze the file and return a JSON object that STRICTLY follows the schema below.
-
-Output schema (must match exactly):
+TASK
+----
+Analyze the file and return a JSON object that STRICTLY matches the schema below.
 
 {
   "summary": string,
-
   "issues": [
     {
       "severity": "high" | "medium" | "low",
@@ -44,7 +40,6 @@ Output schema (must match exactly):
       "description": string
     }
   ],
-
   "suggestions": [
     {
       "text": string,
@@ -57,21 +52,30 @@ Output schema (must match exactly):
       "notes": string[]
     }
   ],
-
   "strengths": string[]
 }
 
-Rules (non-negotiable):
-- Output ONLY valid JSON. Do NOT include markdown, comments, or explanations.
-- Do NOT include line numbers.
-- Do NOT calculate or mention any score.
-- Use ONLY "high", "medium", or "low" for severity.
+RULES (non-negotiable):
+- Output ONLY valid JSON (no markdown, comments, or explanations).
+- No line numbers.
+- No scores.
+- Severity must be exactly: "high", "medium", or "low".
 - Issues must be concrete and observable in THIS FILE.
-- Suggestions must directly relate to listed issues when possible.
+- Identify AT MOST 3 issues. If more than 3 are found, select the 3 most important based on impact.
+- When selecting issues, prioritize correctness, security, and maintainability over style or formatting concerns.
+- Prefer fewer, deeper issues over many minor ones.
+- Do NOT pad the issues list to reach 3; return fewer if appropriate.
+- It is acceptable to return 0 issues if no meaningful problems are present.
+- Suggestions should directly and explicitly address listed issues whenever possible.
+- Suggestions SHOULD be provided only when they meaningfully address one or more listed issues.
 - Strengths must be factual and visible in the code (max 3).
-- If no issues are found, return an empty "issues" array.
-- If no suggestions are applicable, return an empty "suggestions" array.
-- Be concise and precise. Avoid generic best practices.
+- If none apply, return empty arrays for "issues" and/or "suggestions".
+- For every suggestion.fixes[].title, the value MUST exactly match one of the issues[].title strings.
+- Treat issues[].title values as an enum; fixes[].title MUST be selected from them verbatim.
+- Do NOT invent new titles in fixes.
+- If a suggestion addresses multiple issues, include multiple fixes entries, each with a title that exactly matches an existing issues[].title.
+- If there are no issues, the fixes array MUST be empty.
+- Be concise and specific. Avoid generic best practices.
 
 Return the JSON object now.
 `;
