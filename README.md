@@ -12,7 +12,7 @@
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/<your-username>/nero-review/main/demo.gif"
+    src="https://raw.githubusercontent.com/alcanivorax/nero-review/main/assets/nero-review-preview.gif"
     alt="nero-review demo"
     width="800"
   />
