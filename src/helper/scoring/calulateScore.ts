@@ -1,4 +1,6 @@
-import { CodeReviewResult } from "../types.js";
+import { CodeReviewResult } from "../../types.js";
+
+// TODO(v0.2): Suppress or adjust scoring for generated/config files
 
 export function calulateScore(review: CodeReviewResult): number {
   let score: number = 10;

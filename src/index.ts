@@ -2,5 +2,11 @@
 
 import "dotenv/config";
 import { runCommand } from "./cli/runCommand.js";
+import { notifyUpdate } from "./update.js";
+import { options } from "./cli/options.js";
 
-runCommand(process.argv.slice(2));
+notifyUpdate();
+
+const opts = options(); // Returns { filePath: string }
+
+runCommand(opts.filePath);

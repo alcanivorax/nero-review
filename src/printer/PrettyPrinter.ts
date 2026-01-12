@@ -21,12 +21,16 @@ export class PrettyPrinter implements Printer {
     truncated: FileMetadata["truncated"]
   ) {
     console.log();
+    console.log(theme.divider(this.width - 27));
+    console.log(theme.header("Nero Review"));
+    console.log(theme.divider(this.width - 27));
+    console.log();
     if (truncated) {
       console.log(
-        theme.title(" File is large; review is based on partial content.")
+        theme.title("Note: File is large. Review is based on partial content.")
       );
+      console.log();
     }
-    console.log();
     console.log(theme.title(review.filePath));
 
     const left = theme.muted(review.metaLeft);

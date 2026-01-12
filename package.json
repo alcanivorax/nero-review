@@ -20,16 +20,29 @@
   },
   "files": [
     "dist",
-    "README.npm.md"
+    "README.md"
   ],
-  "readme": "README.npm.md",
   "engines": {
     "node": ">=18"
   },
   "keywords": [
     "nero",
+    "nero-review",
     "code-review",
-    "terminal"
+    "code-analysis",
+    "static-analysis",
+    "cli",
+    "terminal",
+    "developer-tools",
+    "devtools",
+    "productivity",
+    "ai",
+    "ai-code-review",
+    "review-tool",
+    "source-code",
+    "code-quality",
+    "linting",
+    "automation"
   ],
   "author": "alcanivorax",
   "license": "MIT",
@@ -38,10 +51,12 @@
     "chalk": "^5.6.2",
     "commander": "^14.0.2",
     "dotenv": "^17.2.3",
-    "ora": "^9.0.0"
+    "ora": "^9.0.0",
+    "update-notifier": "^7.3.1"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
+    "@types/update-notifier": "^6.0.8",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
