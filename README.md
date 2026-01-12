@@ -2,21 +2,21 @@
 
 <h1 align="center">nero-review</h1>
 
-<!-- <p align="center">
+<p align="center">
   <img src="https://img.shields.io/npm/v/nero-review?color=6366f1" alt="npm version" />
-  <img src="https://img.shields.io/npm/dm/nero-review?color=0f172a" alt="npm downloads" />
+  <!-- <img src="https://img.shields.io/npm/dm/nero-review?color=0f172a" alt="npm downloads" /> -->
   <img src="https://img.shields.io/github/license/alcanivorax/nero-review?color=22c55e" alt="license" />
-</p> -->
+</p>
 
 <br />
 
-<!-- <p align="center">
+<p align="center">
   <img
-    src="https://raw.githubusercontent.com/alcanivorax/nero-review/main/assets/nero-review-preview.png"
-    alt="nero-review preview"
-    width="700"
+    src="https://raw.githubusercontent.com/<your-username>/nero-review/main/demo.gif"
+    alt="nero-review demo"
+    width="800"
   />
-</p> -->
+</p>
 
 <br />
 
