@@ -24,6 +24,9 @@ Environment:
   NERO_API_KEY   API key for the AI provider (required)
   NERO_MODEL     Model name to use (required)
 
+nero-reivew currently supports OpenRouter as its AI provider
+You must configure and OpenRouter API key and model before running the CLI.
+
 Setup (Linux/macOS):
 
 Create a secrets file:
