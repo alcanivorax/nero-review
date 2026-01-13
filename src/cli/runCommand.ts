@@ -9,11 +9,13 @@ import { formatReview } from "../printer/formatReview.js";
 import { PrettyPrinter } from "../printer/PrettyPrinter.js";
 import { step } from "./loader.js";
 import { theme } from "../helper/ui/theme.js";
+import { assertEnvironment } from "../helper/ui/assertEnvironment.js";
 
 export async function runCommand(args: string) {
   const filePath = args;
 
   try {
+    await assertEnvironment();
     await assertFile(filePath);
     const readStep = step(theme.muted(" Reading file")).start();
     const fileMetadata = await readFileContent(filePath);
