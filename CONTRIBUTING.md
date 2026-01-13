@@ -2,8 +2,7 @@
 
 # Contributing to nero-review
 
-Thanks for your interest in contributing to **nero-review**.  
-This project values **clarity, focus, and intentional design**. Contributions that respect these principles are always welcome.
+Thanks for your interest in contributing to **nero-review**.
 
 ---
 

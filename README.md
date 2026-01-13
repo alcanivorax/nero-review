@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/npm/v/nero-review?color=6366f1" alt="npm version" />
-  <!-- <img src="https://img.shields.io/npm/dm/nero-review?color=0f172a" alt="npm downloads" /> -->
+  <img src="https://img.shields.io/npm/dw/nero-review?color=0f172a" alt="npm downloads" />
   <img src="https://img.shields.io/github/license/alcanivorax/nero-review?color=22c55e" alt="license" />
 </p>
 
@@ -63,9 +63,13 @@ nero-review ./api/login/route.ts
 ## Environment Variable Setup
 
 <!-- Full configuration details are available in the docs:
-👉 **[Read documentation](link)**
+👉 **[Read documentation](link)** -->
 
---- -->
+`nero-reivew` currently supports **OpenRouter** as its AI provider
+
+You must configure and OpenRouter API key and model before running the CLI.
+
+---
 
 <br />
 
@@ -102,6 +106,53 @@ setx NERO_MODEL "your_model_name"
 ```
 
 Restart your terminal or VS Code after setting them.
+
+<br />
+
+## Recommended OpenRouter Models
+
+`nero-review` performance depends heavily on the selected model.
+
+For the best experince, use one of the following OpenRouter models:
+
+---
+
+<br />
+
+### Fast & Balanced (Recommended)
+
+Best choice for everyday use. Good speed with reliable reasoning.
+
+**Free**
+
+```text
+mistralai/devstral-2512:free
+google/gemma-3-27b-it:free
+```
+
+**Paid**
+
+```text
+anthropic/claude-3.5-sonnet
+openai/gpt-4o-mini
+```
+
+<br />
+
+### High Quality (Slower)
+
+**Free**
+
+```text
+qwen/qwen3-coder:free
+```
+
+**Paid**
+
+```text
+anthropic/claude-3-opus
+openai/gpt-4o
+```
 
 <br />
 
