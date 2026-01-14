@@ -2,28 +2,34 @@
 
 import "dotenv/config";
 import { runCommand } from "./cli/runCommand.js";
-import { checkForUpdate } from "./update.js";
+import { checkForCliUpdate } from "cli-update-check";
 import { options } from "./cli/options.js";
 import { CLI_NAME, CLI_VERSION } from "./meta.js";
 import { theme } from "./helper/ui/theme.js";
 
 const opts = options(); // { filePath: string }
+try {
+  await runCommand(opts.filePath);
+  setTimeout(async () => {
+    const msg = await checkForCliUpdate({
+      name: CLI_NAME,
+      version: CLI_VERSION,
+    });
 
-// Fire-and-forget update check
-let updateMessage: string | null = null;
-
-setTimeout(() => {
-  try {
-    const latest = checkForUpdate(CLI_NAME, CLI_VERSION);
-    if (latest) {
-      updateMessage = `Update available: ${CLI_VERSION} → ${latest}\nRun npm i -g nero-review`;
+    if (msg) {
+      console.log(
+        "\n" +
+          theme.muted("──────────────────────────") +
+          "\n" +
+          theme.muted("Update available") +
+          "\n" +
+          theme.muted(msg.replace("Update available:", "").trim()) +
+          "\n" +
+          theme.muted("──────────────────────────")
+      );
     }
-  } catch {}
-}, 0);
-
-// Main execution (never blocked)
-await runCommand(opts.filePath);
-
-if (updateMessage) {
-  console.log("\n" + theme.muted(updateMessage));
+  }, 0);
+} catch (err) {
+  console.error("Unexpected error:", err);
+  process.exit(1);
 }

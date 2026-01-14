@@ -44,11 +44,16 @@
     "linting",
     "automation"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alcanivorax/nero-review"
+  },
   "author": "alcanivorax",
   "license": "MIT",
   "dependencies": {
     "@openrouter/sdk": "^0.3.11",
     "chalk": "^5.6.2",
+    "cli-update-check": "^1.0.1",
     "commander": "^14.0.2",
     "dotenv": "^17.2.3",
     "ora": "^9.0.0",
@@ -57,7 +62,6 @@
   "devDependencies": {
     "@types/node": "^25.0.3",
     "@types/semver": "^7.7.1",
-    "@types/update-notifier": "^6.0.8",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
