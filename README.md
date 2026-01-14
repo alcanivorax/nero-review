@@ -170,3 +170,13 @@ File → Analyze → Prompt → AI → Validate → Format → Output
 - No keys are logged or printed
 - No data is stored or cached
 - Requests are sent only for the file under review
+
+
+## Contributing
+
+Contributions are welcome! 🎉
+
+If you'd like to improve the project (documentation, fixes, or small enhancements),
+please follow the steps outlined in [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+This project is beginner-friendly, and small improvements are always appreciated.
