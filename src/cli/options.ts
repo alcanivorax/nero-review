@@ -11,51 +11,51 @@ export function options(): CliOptions {
   const program = new Command();
 
   program
-    .name(CLI_NAME)
-    .description("Review code directly from your terminal")
-    .version(CLI_VERSION, "-v, --version", "Print the current version")
-    .helpOption("-h, --help", "Show help and usage information")
-    .argument("<file>", "Path to the file to review (single file only)")
-    .addHelpText(
-      "after",
-      `
-Environment:
-
+  .name(CLI_NAME)
+  .description(
+    "Analyze and review a single source code file using AI, directly from your terminal."
+  )
+  .version(CLI_VERSION, "-v, --version", "Print the CLI version")
+  .helpOption("-h, --help", "Show help information")
+  .argument(
+    "<file>",
+    "Path to the source code file to review (only one file is supported)"
+  )
+  .addHelpText(
+    "after",
+    `
+Environment Variables:
   NERO_API_KEY   API key for the AI provider (required)
   NERO_MODEL     Model name to use (required)
 
-nero-reivew currently supports OpenRouter as its AI provider
-You must configure and OpenRouter API key and model before running the CLI.
+Notes:
+  • nero-review currently supports OpenRouter as its AI provider.
+  • Make sure the required environment variables are set before running the CLI.
 
 Setup (Linux/macOS):
+  Create a secrets file:
+    ~/.config/nero/secrets.sh
 
-Create a secrets file:
+  Add your configuration:
+    export NERO_API_KEY="your_api_key_here"
+    export NERO_MODEL="your_model_name"
 
-  ~/.config/nero/secrets.sh
-  
-Add your configuration:
-
-  export NERO_API_KEY="your_api_key_here"
-  export NERO_MODEL="your_model_name"
-
-Then source it in your shell config (.zshrc, .bashrc, etc.):
-
-  [ -f "$HOME/.config/nero/secrets.sh" ] && source "$HOME/.config/nero/secrets.sh"
+  Source it in your shell config (.zshrc, .bashrc, etc.):
+    [ -f "$HOME/.config/nero/secrets.sh" ] && source "$HOME/.config/nero/secrets.sh"
 
 Setup (Windows PowerShell):
-
   setx NERO_API_KEY "your_api_key_here"
   setx NERO_MODEL "your_model_name"
 
-Restart your terminal or VS Code after setting them.
+  Restart your terminal or VS Code after setting them.
 
 Examples:
-  $ nero-review src/index.ts
-  $ nero-review ./api/login/route.ts
-
+  nero-review src/index.ts
+  nero-review ./api/login/route.ts
 `
-    )
-    .parse(process.argv);
+  )
+  .parse(process.argv);
+
 
   const [file] = program.args;
 
