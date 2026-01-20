@@ -23,6 +23,9 @@ importers:
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
+      file-lang:
+        specifier: ^0.1.0
+        version: 0.1.0
       ora:
         specifier: ^9.0.0
         version: 9.0.0
@@ -239,6 +242,10 @@ packages:
     resolution: {integrity: sha512-HyNQImnsOC7X9PMNaCIeAm4ISCQXs5a5YasTXVliKv4uuBo1dKrG0A+uQS8M5eXjVMnLg3WgXaKvprHlFJQffw==}
     engines: {node: '>=18'}
     hasBin: true
+
+  file-lang@0.1.0:
+    resolution: {integrity: sha512-qEWJhbYt09Rc+yzzE/iV/R2YuQdVZk9sfxMXY0LVlJisqgeMkUKOS4lBghndvMszp2XOBkllxjCi5zSGu9ARwQ==}
+    engines: {node: '>=18'}
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -460,6 +467,8 @@ snapshots:
       '@esbuild/win32-arm64': 0.27.2
       '@esbuild/win32-ia32': 0.27.2
       '@esbuild/win32-x64': 0.27.2
+
+  file-lang@0.1.0: {}
 
   fsevents@2.3.3:
     optional: true

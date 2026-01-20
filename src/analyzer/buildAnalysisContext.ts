@@ -1,6 +1,6 @@
+import { detectLanguage } from "file-lang";
 import { FileMetadata } from "../types.js";
 import { AnalysisContext } from "../types.js";
-import { detectLanguage } from "./detectLanguage.js";
 import { detectRole } from "./detectRole.js";
 import { detectStyle } from "./detectStyle.js";
 import { collectNotes } from "./detectNotes.js";
