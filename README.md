@@ -171,6 +171,7 @@ File → Analyze → Prompt → AI → Validate → Format → Output
 - No data is stored or cached
 - Requests are sent only for the file under review
 
+<br />
 
 ## Contributing
 
