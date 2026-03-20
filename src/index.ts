@@ -7,7 +7,8 @@ import { options } from "./cli/options.js";
 import { CLI_NAME, CLI_VERSION } from "./meta.js";
 import { theme } from "./helper/ui/theme.js";
 
-const opts = options(); // { filePath: string }
+const opts = options();
+
 try {
   await runCommand(opts.filePath);
   setTimeout(async () => {
@@ -17,19 +18,15 @@ try {
     });
 
     if (msg) {
-      console.log(
-        "\n" +
-          theme.muted("──────────────────────────") +
-          "\n" +
-          theme.muted("Update available") +
-          "\n" +
-          theme.muted(msg.replace("Update available:", "").trim()) +
-          "\n" +
-          theme.muted("──────────────────────────")
-      );
+      console.log();
+      console.log(theme.divider(80));
+      console.log(theme.warning("  Update available"));
+      console.log(theme.muted(`  ${msg.replace("Update available:", "").trim()}`));
+      console.log(theme.divider(80));
+      console.log();
     }
   }, 0);
 } catch (err) {
-  console.error("Unexpected error:", err);
+  console.error(theme.error("Unexpected error:"), err);
   process.exit(1);
 }

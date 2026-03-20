@@ -17,18 +17,30 @@ export async function runCommand(args: string) {
   try {
     await assertEnvironment();
     await assertFile(filePath);
+
+    // console.log();
+    // console.log(theme.primary(" ██╗   ██╗██╗ ██████╗████████╗ ██████╗ ██████╗ ██╗   ██╗"));
+    // console.log(theme.secondary(" ██║   ██║██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝"));
+    // console.log(theme.accent(" ██║   ██║██║██║        ██║   ██║   ██║██████╔╝ ╚████╔╝ "));
+    // console.log(theme.muted(" ╚██╗ ██╔╝██║██║        ██║   ██║   ██║██╔══██╗  ╚██╔╝  "));
+    // console.log(theme.muted("  ╚████╔╝ ██║╚██████╗   ██║   ╚██████╔╝██║  ██║   ██║   "));
+    // console.log(theme.muted("   ╚═══╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   "));
+    // console.log();
+    // console.log(theme.divider(80));
+    console.log();
+
     const readStep = step(theme.muted(" Reading file")).start();
     const fileMetadata = await readFileContent(filePath);
     readStep.stopAndPersist({
-      symbol: theme.loader("✔ "),
-      text: theme.muted("Reading file"),
+      symbol: theme.success(" ✓"),
+      text: theme.success("Reading complete"),
     });
 
     const analyzeStep = step(theme.muted(" Analyzing structure")).start();
     const analysisContext = await buildAnalysisContext(fileMetadata);
     analyzeStep.stopAndPersist({
-      symbol: theme.loader("✔ "),
-      text: theme.muted("Analyzing structure"),
+      symbol: theme.success(" ✓"),
+      text: theme.success("Analysis complete"),
     });
 
     const reviewStep = step(theme.muted(" Generating review")).start();
@@ -38,12 +50,16 @@ export async function runCommand(args: string) {
     const reviewReport = createCodeReviewResult(
       aiReview,
       fileMetadata,
-      analysisContext
+      analysisContext,
     );
     reviewStep.stopAndPersist({
-      symbol: theme.loader("✔ "),
-      text: theme.muted("Generating review"),
+      symbol: theme.success(" ✓"),
+      text: theme.success("Review generated"),
     });
+
+    console.log();
+    console.log(theme.divider(80));
+    console.log();
 
     const formattedReview = formatReview(reviewReport);
 
@@ -51,7 +67,7 @@ export async function runCommand(args: string) {
     logger.print(formattedReview, fileMetadata);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error(theme.error(" ✖ "), theme.muted(message));
+    console.error(theme.error(" ✗"), theme.muted(message));
     process.exit(1);
   }
 }

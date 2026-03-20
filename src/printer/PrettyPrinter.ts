@@ -1,14 +1,13 @@
 import { wrap } from "../helper/text/wrap.js";
 import { severityIcon } from "../helper/ui/severityIcon.js";
-import { theme } from "../helper/ui/theme.js";
+import { theme, fileIcon } from "../helper/ui/theme.js";
 import { FileMetadata, FormattedReview, Printer } from "../types.js";
 
 export class PrettyPrinter implements Printer {
   private readonly width = 80;
-  private readonly scoreColumnWidth = 24;
 
   print(review: FormattedReview, fileMetadata: FileMetadata): void {
-    this.printHeader(review.header, fileMetadata.truncated);
+    this.printHeader(review.header, fileMetadata);
     this.printSummary(review.summary);
     this.printIssues(review.issues);
     this.printSuggestions(review.suggestions, review.issues);
@@ -16,101 +15,92 @@ export class PrettyPrinter implements Printer {
     this.printFooter(review.footer);
   }
 
+  private printSection(label: string, colorFn: (s: string) => string) {
+    console.log(colorFn(`  ◆ ${label}`));
+    console.log(theme.divider(this.width));
+  }
+
+  private printEmptyState(msg: string) {
+    console.log(theme.muted(`   ${msg}`));
+    console.log();
+  }
+
   private printHeader(
     review: FormattedReview["header"],
-    truncated: FileMetadata["truncated"]
+    fileMetadata: FileMetadata,
   ) {
     console.log();
-    if (truncated) {
-      console.log(
-        theme.title("Note: File is large. Review is based on partial content.")
+
+    const langIcon = fileIcon(review.metaLeft.split(" ")[0] || "default");
+    const fileLine = ` ${theme.title(review.filePath)} `;
+    const langLine = ` ${langIcon} ${fileMetadata.lines} lines`;
+    const scoreLine = ` ${theme.primary("Review Score")} `;
+    const scoreLabel = review.scoreRight;
+
+    const hr = theme.box.horizontal.repeat(this.width - 2);
+    const pad = (left: string, right: string) =>
+      theme.muted(
+        ".".repeat(Math.max(1, this.width - left.length - right.length - 4)),
       );
-      console.log();
-    }
-    console.log(theme.title(review.filePath));
 
-    const left = theme.muted(review.metaLeft);
-    const right = theme.title(review.scoreRight);
-
-    console.log(left.padEnd(this.width - this.scoreColumnWidth) + right);
+    console.log(theme.box.topLeft + hr + theme.box.topRight);
+    console.log(
+      `${theme.box.vertical}${fileLine}${pad(fileLine, langLine)}${langLine} ${theme.box.vertical}`,
+    );
+    console.log(
+      `${theme.box.vertical}${scoreLine}${pad(scoreLine, scoreLabel)} ${scoreLabel} ${theme.box.vertical}`,
+    );
+    console.log(theme.box.bottomLeft + hr + theme.box.bottomRight);
     console.log();
   }
 
   private printSummary(summary: string) {
-    console.log(theme.header("Summary"));
+    this.printSection("Summary", theme.primary);
     console.log(theme.muted(wrap(summary, this.width - 4)));
     console.log();
   }
 
   private printIssues(issues: FormattedReview["issues"]) {
-    const { total } = issues;
+    this.printSection(`Issues (${issues.total})`, theme.primary);
 
-    console.log(theme.header(`Issues (${total} found)`));
-
-    if (total === 0) {
-      console.log(theme.muted("  No issues found"));
-      console.log();
-      return;
-    }
+    if (issues.total === 0)
+      return this.printEmptyState("No issues found — great work!");
 
     console.log();
     for (const issue of issues.items) {
-      const icon = severityIcon(issue.severity);
-
-      const label =
-        theme.severity[issue.severity]?.(
-          issue.severity.toUpperCase().padEnd(6)
-        ) ?? theme.severity.unknown(issue.severity);
-
+      const severityColor =
+        theme.severity[issue.severity] ?? theme.severity.unknown;
       console.log(
-        ` ${icon}  ${label}   ${theme.title(issue.title)}  ${theme.lineInfo(
-          issue.line
-        )}`
+        ` ${severityIcon(issue.severity)}  ${severityColor(` ${issue.severity.toUpperCase()} `)}  ${theme.title(issue.title)}  ${theme.lineInfo(issue.line)}`,
       );
-
       console.log(
-        theme.muted(wrap(issue.description, this.width - 11, "             "))
+        theme.muted(wrap(issue.description, this.width - 11, "           ")),
       );
-
       console.log();
     }
   }
 
   private printSuggestions(
     suggestions: FormattedReview["suggestions"],
-    issues: FormattedReview["issues"]
+    _issues: FormattedReview["issues"],
   ) {
-    console.log(theme.header("Suggestions"));
+    this.printSection("Recommendations", theme.secondary);
 
-    if (suggestions.length === 0) {
-      console.log(theme.muted("  No suggestions"));
-      console.log();
-      return;
-    }
+    if (suggestions.length === 0)
+      return this.printEmptyState("No specific recommendations");
 
     console.log();
-
     for (const s of suggestions) {
       console.log(
-        `  ${theme.title(String(s.index) + ".")} ${theme.title(
-          s.recommendation
-        )}`
+        `  ${theme.accent(`${s.index}.`)} ${theme.title(s.recommendation)}`,
       );
-
       for (const fix of s.fixes) {
-        // const issue = this.findIssueForFix(fix, issues.items);
-        // const issueTitle = issue?.title || "Unknown issue";
-        // const issueLine = issue?.line ?? "?";
-
         console.log(
           theme.muted(
-            `     ${theme.arrow} Fixes: ${severityIcon(fix.severity)}  ${
-              fix.title
-            }`
-          )
+            `     ${theme.arrow} Fixes: ${severityIcon(fix.severity)}  ${fix.title}`,
+          ),
         );
       }
-
       for (const note of s.notes) {
         console.log(`     ${theme.arrow} ${theme.muted(note)}`);
       }
@@ -119,23 +109,11 @@ export class PrettyPrinter implements Printer {
     console.log();
   }
 
-  // private findIssueForFix(fix: any, issues: any[]): any | null {
-  //   return (
-  //     issues.find((issue) => issue.severity === fix.severity) ||
-  //     issues[issues.length - 1] ||
-  //     null
-  //   );
-  // }
-
   private printStrengths(strengths: string[]) {
-    console.log();
-    console.log(theme.header("What's working well"));
+    this.printSection("What's Working Well", theme.success);
 
-    if (strengths.length === 0) {
-      console.log(theme.muted("  No specific strengths identified"));
-      console.log();
-      return;
-    }
+    if (strengths.length === 0)
+      return this.printEmptyState("No specific strengths highlighted");
 
     for (const s of strengths) {
       console.log(`  ${theme.bullet} ${theme.muted(s)}`);
@@ -145,6 +123,9 @@ export class PrettyPrinter implements Printer {
 
   private printFooter(text: string) {
     console.log(theme.divider(this.width));
-    console.log(theme.success(`Next steps: ${text}`));
+    console.log();
+    this.printSection("Next Steps", theme.success);
+    console.log(theme.muted(` ${text}`));
+    console.log();
   }
 }

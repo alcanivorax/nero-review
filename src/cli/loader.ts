@@ -5,19 +5,14 @@ export function step(text: string) {
   return ora({
     text,
     spinner: {
-      interval: 80,
+      interval: 120,
       frames: [
-        theme.loader("⠋"),
-        theme.loader("⠙"),
-        theme.loader("⠹"),
-        theme.loader("⠸"),
-        theme.loader("⠼"),
-        theme.loader("⠴"),
-        theme.loader("⠦"),
-        theme.loader("⠧"),
-        theme.loader("⠇"),
-        theme.loader("⠏"),
+        theme.loader("◐"),
+        theme.loader("◓"),
+        theme.loader("◑"),
+        theme.loader("◒"),
       ],
     },
+    color: "cyan",
   });
 }

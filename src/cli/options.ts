@@ -11,19 +11,19 @@ export function options(): CliOptions {
   const program = new Command();
 
   program
-  .name(CLI_NAME)
-  .description(
-    "Analyze and review a single source code file using AI, directly from your terminal."
-  )
-  .version(CLI_VERSION, "-v, --version", "Print the CLI version")
-  .helpOption("-h, --help", "Show help information")
-  .argument(
-    "<file>",
-    "Path to the source code file to review (only one file is supported)"
-  )
-  .addHelpText(
-    "after",
-    `
+    .name(CLI_NAME)
+    .description(
+      "Review a single source code file using an AI provider, directly from your terminal",
+    )
+    .version(CLI_VERSION, "-v, --version", "Print the CLI version")
+    .helpOption("-h, --help", "Show help information")
+    .argument(
+      "<file>",
+      "Path to the source code file to review (only one file is supported)",
+    )
+    .addHelpText(
+      "after",
+      `
 Environment Variables:
   NERO_API_KEY   API key for the AI provider (required)
   NERO_MODEL     Model name to use (required)
@@ -52,10 +52,9 @@ Setup (Windows PowerShell):
 Examples:
   nero-review src/index.ts
   nero-review ./api/login/route.ts
-`
-  )
-  .parse(process.argv);
-
+`,
+    )
+    .parse(process.argv);
 
   const [file] = program.args;
 
